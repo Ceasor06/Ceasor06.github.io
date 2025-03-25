@@ -1,0 +1,6 @@
+# _config.yml
+title: "Ceasor06's Website"
+description: "Welcome to my portfolio and projects"
+remote_theme: pages-themes/cayman@v0.2.0  # Using a pre-built theme from GitHub Pages themes
+plugins:
+  - jekyll-remote-theme
