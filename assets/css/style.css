@@ -1,0 +1,1256 @@
+/* 1) Define a little fade‑up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2) A helper class to mark “fadeable” elements */
+.fade-in {
+  opacity: 0;
+}
+
+/* 3) When we add the .animate class, kick off the animation */
+.fade-in.animate {
+  animation-name: fadeInUp;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  /* delay is set via inline --delay variable */
+  animation-delay: var(--delay, 0s);
+}
+
+/* 4) For scroll‑triggered fades */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*****************************************************************************
+  1. BASE & RESET
+*****************************************************************************/
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* if your header is ~4rem tall, give your section a top margin for scroll offset */
+#contact‑section {
+  scroll-margin-top: 4rem;
+}
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  /* Default (light-theme) colors will be overridden by theme classes */
+}
+
+/*****************************************************************************
+  2. THEMES
+*****************************************************************************/
+
+/* Light Theme */
+body.light-theme {
+  background: #ebeaea;
+  color: #030202;
+}
+
+/* Dark Theme */
+body.dark-theme {
+  background: #131320;
+  color: #9f9e9e; /* For text */
+}
+
+/*****************************************************************************
+  3. HEADER
+*****************************************************************************/
+
+/* Header Container */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  /* Remove the solid background-color here */
+  /* We'll rely on theme classes for the new transparent background */
+  
+  /* Optional: padding, display, etc. remain the same */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+/* Light Theme Header: semi-transparent + blur */
+body.light-theme .header {
+  background: rgba(241, 241, 241, 0.8); /* semi-transparent light color */
+  backdrop-filter: blur(8px);          /* “frosted glass” effect */
+  -webkit-backdrop-filter: blur(8px);  /* Safari prefix */
+}
+
+/* Dark Theme Header: semi-transparent + blur */
+body.dark-theme .header {
+  background: rgba(19, 19, 32, 0.6);   /* semi-transparent dark color */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* (Optional) If text color is too light or dark, adjust inside these theme classes: */
+body.light-theme .header-links li a {
+  color: #1e1e2f; /* or something else that reads well on the light glass background */
+}
+body.dark-theme .header-links li a {
+  color: #f9f6f6; /* or something else that reads well on the dark glass background */
+}
+
+
+/* Header Title */
+.header-left strong {
+  font-size: 1.5rem;
+}
+
+/* Header Right: link list + theme toggle */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.header-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.header-links li a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+body.light-theme .header-links li a:hover {
+  color: #0f0f0f; /* slightly darker than your light theme link color */
+}
+
+body.dark-theme .header-links li a:hover {
+  color: #c5c5c5; /* a bit darker than your dark theme link color */
+}
+
+body.dark-theme .theme-toggle {
+  color: #fff; /* dark theme: white toggle icon */
+}
+
+
+.theme-toggle {
+  /* Force the button to a fixed size */
+  width: 30px;
+  height: 30px;
+  
+  /* Use flexbox to center the emoji */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Set a fixed font-size and line-height */
+  font-size: 2rem;
+  line-height: 1;
+  
+  /* Optional: Remove extra padding or margins if needed */
+  padding: 10;
+  margin: 10;
+}
+
+body.light-theme .theme-toggle {
+  font-size: 2rem;         /* Increase the size of the sun icon */
+  /* transform: translateY(-2.9px); Adjust vertical position as needed */
+  /* You can also add margins or padding if required */
+  /* margin-left: 0.5rem; */
+}
+
+
+/*****************************************************************************
+  4. MAIN CONTENT / PAGE SECTIONS
+*****************************************************************************/
+
+/* Prevent main content from hiding behind fixed header */
+main {
+  padding-top: 4rem;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+/*****************************************************************************
+  5. INTRO SECTION
+*****************************************************************************/
+
+/* Intro Section Container */
+.intro-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  margin-bottom: -2.6rem; /* overlap effect if desired */
+}
+
+/* Intro Card */
+.intro-card {
+  position: relative; /* for absolutely-positioned avatar */
+  min-height: 40vh;
+  width: 150%;
+  max-width: 1120px;
+  border-radius: 1rem;
+  padding: 1.8rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent; /* space for gradient on hover */
+  transition: border 0.3s ease;
+}
+
+/* Light / Dark Theme for Intro Card */
+body.light-theme .intro-card {
+  background: #f8f8f8;
+  color: #333;
+}
+body.dark-theme .intro-card {
+  background: #2a2a3f;
+  color: #fff;
+}
+
+/* Intro Card Hover Gradient */
+.intro-card:hover::after {
+  content: "";
+  position: absolute;
+  top: -5.9px;
+  left: -2.9px;
+  right: -2.9px;
+  bottom: -2.9px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6666ff, #ff33ff);
+  filter: blur(1px);
+  z-index: -1;
+}
+
+/* Floating Avatar */
+.intro-avatar-floating {
+  position: absolute;
+  top: 3rem;
+  left: 2rem;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.intro-avatar-floating img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Intro Header Text */
+.intro-header {
+  margin-left: 280px; /* space for floating avatar */
+  display: flex;
+  flex-direction: column;
+  margin-top: 4rem;
+  gap: 1rem;
+}
+
+.intro-header p {
+  /* allow wrapping at word boundaries */
+  margin-left: 5px;
+  white-space: normal;
+      /* overrides any nowrap */
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.4;
+  max-width: 600px;
+}
+
+.intro-header p {
+  visibility: hidden;      /* hide but still take up space */
+}
+
+/* once we add “visible” it pops into view */
+.intro-header p.visible {
+  visibility: visible;
+}
+
+.intro-header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+/* CTA Container & Button */
+.cta-container {
+  margin-top: 8rem;
+  text-align: center;
+}
+.cta-button {
+  background: #ff5c8d;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+  width: fit-content;
+}
+.cta-button:hover {
+  background: #e04a7b;
+}
+
+/*****************************************************************************
+  6. INFO CARDS SECTION
+*****************************************************************************/
+
+/* Info Cards Container */
+/* Existing .info-cards might look like this */
+.info-cards {
+  display: grid;
+  /* you can pick fixed widths or let them flex: */
+  grid-template-columns: 210px minmax(345px,345px) 580px;
+  grid-template-rows: auto auto;
+  grid-gap: 0.1rem;
+  grid-template-areas:
+    "skills location workexp"
+    "skills   new    workexp";
+
+  gap: 1.0rem  0.09rem;  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.location-card {
+  grid-column: location;    /* stays in that column */
+  width: 800px;             /* forces it wider than the track */
+  max-width: 100%;
+  justify-self: center;     /* center if it’s narrower */
+}
+
+.skills-card          { grid-area: skills; }
+.location-card        { grid-area: location; }
+.new-card             { grid-area: new; }
+.work-experience-card { grid-area: workexp; }
+
+
+/* On wider screens, place them side-by-side */
+@media (min-width: 768px) {
+  .info-cards {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .card {
+    flex: 1;
+    margin: 0 0.5rem;
+  }
+}
+
+/* Generic Card Styles */
+.card {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: border 0.3s ease;
+}
+
+/* Light & Dark Theme for Cards */
+body.light-theme .card {
+  background: #f8f8f8;
+  color: #333;
+}
+body.dark-theme .card {
+  background: #2a2a3f;
+  color: #fff;
+}
+
+/* Card Hover Gradient Border */
+.card:hover::after {
+  content: "";
+  position: absolute;
+  top: -4.4px;
+  left: -4.4px;
+  right: -4.4px;
+  bottom: -4.4px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6666ff, #ff33ff);
+  filter: blur(1px);
+  z-index: -1;
+}
+
+
+.card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.card li {
+  margin-bottom: 0.5rem;
+}
+
+/* Skills Card */
+.skills-card .top-skills {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.top-skills-title {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.skills-card:hover .top-skills,
+.skills-card:hover .top-skills-title {
+  opacity: 0.05;
+}
+
+.skills-card .more-skills {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+}
+
+.skills-card:hover .more-skills {
+  opacity: 1;
+}
+
+/* Experience Card */
+.experience-card {
+  width: 220px;
+  height: 220px;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+body.light-theme .experience-card {
+  background: #e8e8e8;
+  color: #333;
+}
+body.dark-theme .experience-card {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+/* Location Card */
+.location-card {
+  width: 100px;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.location-icon {
+  margin-bottom: 0.5rem;
+}
+.location-card h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+.location-card p {
+  margin: 0;
+  font-size: 1rem;
+}
+body.light-theme .location-card {
+  background: #f8f8f8;
+  color: #333;
+}
+body.dark-theme .location-card {
+  background: #2a2a3f;
+  color: #fff;
+}
+
+/*****************************************************************************
+  7. SKILL ICONS
+*****************************************************************************/
+
+/* Generic Skill Icon */
+.skill-icon {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  margin-right: 6px;
+  transform: translateY(10px); /* Adjust if needed */
+}
+
+/*****************************************************************************
+  8. PROJECTS SECTION
+*****************************************************************************/
+
+/* Projects Section */
+.projects-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  /* text-align: center; */
+}
+
+.projects-intro {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+
+.projects-section h2 {
+  margin-top:1rem;
+  font-size: 2rem;
+  margin-bottom: 10rem;
+  font-weight: 100; /* Thin text */
+  color: #666;      /* Adjust color as desired */
+}
+
+/* Project Card */
+.project-card {
+  position: relative;
+  border-radius: 1rem;
+  padding: 3rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 550px;
+}
+
+.project-text h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem; /* Extra space so we can position the button easily */
+}
+
+.project-text .project-subtitle {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  margin-left: 0rem;
+}
+
+/* Description */
+.project-text .project-description {
+  line-height: 1.6;
+  margin-bottom: 5rem;
+  color: #666; /* For a greyish tone; adjust as needed */
+}
+
+/* Project Button */
+.project-text .project-button {
+  position: absolute;
+  bottom: 8rem;
+  left: 2.65rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+/* Light / Dark theme defaults */
+body.light-theme .project-card .project-button {
+  background: #12113f;
+  color: #fff;
+}
+body.dark-theme .project-card .project-button {
+  background: #ff5c8d;
+  color: #fff;
+}
+
+/* Universal Hover: gradient */
+body.light-theme .project-text .project-button:hover,
+body.dark-theme .project-text .project-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #ff33ff, #5045df);
+}
+
+/* Project Image (SVG or IMG) */
+.project-image svg {
+  max-width: 800px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+svg.animated {
+  width: 350px;
+  height: auto;
+}
+
+/* Light / Dark Theme for project card background */
+body.light-theme .project-card {
+  background: #f8f8f8;
+  color: #333;
+}
+body.dark-theme .project-card {
+  background: #2a2a3f;
+  color: #fff;
+}
+
+/* Responsive layout for project cards */
+@media (min-width: 768px) {
+  .info-cards {
+    flex-direction: row;
+  }
+
+  /* Example custom widths for your cards: */
+  .skills-card {
+    flex: 0 0 200px;
+  }
+  .location-card {
+    flex: 0 0 300px;
+  }
+  .experience-card {
+    flex: 0 0 280px;
+  }
+
+  .project-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .project-description {
+    max-width: 80%;
+  }
+  .project-image {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: 1rem;
+    display: block;
+  }
+}
+
+
+/*****************************************************************************
+  10. SKILL
+*****************************************************************************/
+/*
+
+/* Skills Section Heading */
+#skills-section h2 {
+  font-size: 2rem;
+  margin-bottom: 10rem;
+  text-align: center;
+  margin-top: 12rem;
+}
+
+/* Each category container */
+.skills-category {
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+/* Category Title */
+.skills-category h3 {
+  font-size: 1.5rem;
+  margin-bottom: 6rem;
+  text-align: left;
+  padding-left: -10rem;
+}
+
+/* For the skills grid container */
+.skills-grid {
+  display: grid; /* or flex if you prefer */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Adjust column size */
+  gap: -100rem;  /* Controls spacing between skill items */
+  margin-left: -3.2rem;
+}
+
+/* Each individual skill card */
+.skill {
+  text-align: center;
+}
+
+/* Skill item styling */
+/* .skill-item {
+  display: flex;
+  flex-direction: column;
+  align-items: right;
+  
+} */
+
+.skill-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* Hide the skill name text by default */
+.skill-item .skill-name {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  /* Optionally, you can also use position absolute if you want the text to overlap exactly 
+     the logo's position:*/
+  position: absolute;
+  top: 45%;
+  left: 35%;
+  transform: translate(-50%, -50%);
+  color: grey;
+}
+
+
+/* Transition the SVG's opacity as well */
+.skill-item svg {
+  transition: opacity 0.3s ease;
+}
+
+
+/* On hover, fade out the SVG and fade in the text */
+.skill-item:hover svg {
+  opacity: 0;
+}
+
+.skill-item:hover .skill-name {
+  opacity: 1;
+}
+
+
+
+/* Adjust spacing between the logo and its label */
+.skill-item p {
+  margin-top: -2rem;  /* Increase for more space; decrease to bring closer */
+}
+/* Skill text styling */
+.skill p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+.skill-grid-icon {
+  width: 100px;
+  height: auto; /* This maintains the aspect ratio */
+}
+
+/* Optionally, if you want the grid to be scrollable vertically, you can set a max-height and add overflow-y */
+.skills-grid.scrollable {
+  max-height: 300px; /* For example, adjust as needed */
+  overflow-y: auto;
+}
+/*****************************************************************************
+  11. CONTACT SECTION
+*****************************************************************************/
+
+/* Contact Section Heading */
+#contact-section h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin: 3rem 0 1rem;
+}
+
+
+
+
+.contact-card {
+  /* force full viewport width */
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+
+  /* your existing styles */
+  padding: 2rem 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  box-sizing: border-box; /* include padding in width */
+}
+
+/* Light Theme for Contact Card */
+body.light-theme .contact-card {
+  background: #f8f8f8;  /* Light background for light theme */
+  color: #333;          /* Dark text */
+}
+
+/* Dark Theme for Contact Card */
+body.dark-theme .contact-card {
+  background: #2a2a3f;  /* Dark background for dark theme */
+  color: #fff;          /* Light text */
+}
+
+/* Link Styling within the Contact Card */
+.contact-card a {
+  color: inherit;         /* Inherit current text color */
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.contact-card a:hover {
+  color: #ff5c8d;         /* Change to a highlight color on hover */
+}
+
+
+
+/*****************************************************************************
+  12. Bottom logo
+*****************************************************************************/
+
+
+/* Floating Logo Link Styles */
+.floating-logo-1 {
+  position: fixed;
+  bottom: 20px;      /* Adjust vertical spacing from the bottom */
+  right: 20px;       /* Adjust horizontal spacing from the right */
+  z-index: 200;      /* Ensure it's above other content */
+  display: inline-block;
+}
+
+.floating-logo-1 img {
+  width: 40px;       /* Change as needed */
+  height: auto;      /* Keeps the aspect ratio */
+  transition: transform 0.3s ease;  /* Smooth scaling on hover */
+}
+
+.floating-logo-1:hover img {
+  transform: scale(1.1);  /* Slightly larger on hover */
+}
+
+/* Floating Logo Link Styles */
+.floating-logo-2 {
+  position: fixed;
+  bottom: 20px;      /* Adjust vertical spacing from the bottom */
+  right: 80px;       /* Adjust horizontal spacing from the right */
+  z-index: 200;      /* Ensure it's above other content */
+  display: inline-block;
+}
+
+.floating-logo-2 img {
+  width: 40px;       /* Change as needed */
+  height: auto;      /* Keeps the aspect ratio */
+  transition: transform 0.3s ease;  /* Smooth scaling on hover */
+}
+
+.floating-logo-2:hover img {
+  transform: scale(1.1);  /* Slightly larger on hover */
+}
+
+
+
+
+
+
+
+/* 11. CONTACT‑FOOTER */
+.footer-contact {
+  width: 100%;
+  min-height: 400px;
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+  padding: 3rem 1rem 1.5rem;  /* extra top padding so the h2 & button sit comfortably */
+  text-align: center;
+}
+/* Description under the footer heading */
+.footer-contact__message {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+  margin: 1rem 0;    /* space above & below */
+  max-width: 600px;  /* optional: limit line‐length */
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.footer-contact__inner h2 {
+  color: #fff;
+  font-weight: normal;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-contact__inner .reach-out-btn {
+  margin-top: 2rem;
+  display: inline-block;
+  background: #fff;
+  color: #1e3a8a;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.footer-contact__inner .reach-out-btn:hover {
+  transform: scale(1.05);
+}
+
+/* copy line */
+.footer-contact .footer-copy {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+}
+
+/* Ensure this footer stays on top of any backgrounds */
+.footer-contact {
+  position: relative;
+  z-index: 50;
+}
+
+
+/*****************************************************************************
+  11. OPTIONAL: ANIMATED GRID BACKGROUND (commented out)
+*****************************************************************************/
+/*
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg ... %3E");
+  background-repeat: repeat;
+  opacity: 0.2;
+  animation: moveGrid 10s linear infinite;
+  pointer-events: none;
+  z-index: -2;
+}
+
+@keyframes moveGrid {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 40px; }
+}
+*/
+/* this wrapper is centered page‑wide but narrow */
+.footer‐bar‐wrapper {
+  max-width: 1000px;       /* control how long the bar is */
+  margin: 2rem auto;      /* vertical spacing + center it */
+  text-align: left;       /* make child lines align to the left edge */
+}
+
+/* the thin bar */
+.footer‐bar {
+  width: 100%;            /* fill the wrapper’s width */
+  height: 1px;
+  margin: 0;              /* no extra top/bottom space */
+  border: none;
+  color: grey;
+  background: currentColor;
+}
+
+/* your name and copyright */
+.footer‐bar‐label {
+  margin-top: 1.2rem;     /* spacing under the bar */
+  font-weight: normal;    /* ensure it’s not bold */
+  color: inherit;         /* theme‑aware text */
+}
+
+
+
+
+/* make sure you’re using normal hyphens: “-”, not unicode dashes */
+.footer-bar-wrapper {
+  max-width: 1000px;      /* controls overall width */
+  margin: 2rem auto;      /* center + vertical spacing */
+  text-align: left;       /* left‑column items align left */
+}
+
+.footer-bar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 1rem;       /* gap between bar and labels */
+}
+
+
+
+/* stack the right links, right‑aligned */
+.footer-bar-right {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+/* label style for both name & © lines */
+.footer-bar-label {
+  margin-top: 0.75rem;
+  font-weight: normal;
+  color: inherit;
+}
+
+/* links on the right column */
+.footer-bar-link {
+  margin-bottom: 0.5rem;
+  font-weight: bold;      /* match header style */
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-bar-link:last-child {
+  margin-bottom: 0;       /* no extra under last link */
+}
+
+.footer-bar-link:hover {
+  color: rgba(255,255,255,0.9);  /* highlight on hover */
+}
+
+/* thin divider line */
+.footer-bar {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: none;
+  background: currentColor; /* picks up white on your blue gradient */
+}
+
+
+
+
+
+.work-experience-container {
+  position: relative;
+}
+.work-item {
+  margin-top: 2rem;
+  display: none;
+  position: absolute;
+  width: 100%;
+  top: 0; left: 0;
+  transition: opacity 0s ease;
+  opacity: 0;
+}
+.work-item.active {
+  display: block;
+  opacity: 1;
+}
+
+
+/* 8.x Work‐Experience Dots */
+.work-dots {
+  text-align: left;
+  margin-top: -1rem;
+}
+.work-dots .dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #ccc;
+  border-radius: 50%;
+  margin: 0 5px;
+  transition: background 0.3s ease;
+}
+.work-dots .dot.active {
+  background: #666; /* match your theme or adjust */
+}
+
+
+.work-item {
+  display: flex;
+  flex-direction: column;
+  color: grey;
+  justify-content: space-between;
+  height: 400px;      /* or whatever fixed height you choose */
+}
+
+
+
+/* target the second <p> in every work‐item */
+.work-item p + p {
+  margin-top: 0.75rem;   /* tweak this value until it looks right */
+}
+
+
+
+
+
+/* wrap your text inside a .typing-text span */
+.typing {
+  overflow: hidden;            /* hide the “untyped” text */
+  white-space: nowrap;         /* keep it on one line */
+  display: inline-block;       /* shrink‑to‑fit the content */
+  width: 0;                    /* start with no visible text */
+  border-right: 3px solid;     /* your “caret” */
+  animation:
+    typing 2s steps(15, end) forwards,
+    blink-caret .5s step-end infinite;
+}
+
+/* Animate the width from 0 → 13ch: */
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 15ch; }
+}
+
+/* Your existing blink */
+@keyframes blink-caret {
+  50% { border-color: transparent; }
+  100% { border-color: currentColor; }
+}
+
+/* typing animation for description */
+.typing-desc {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  /* 1) invisible by default */
+  border-right: 2px solid transparent;
+  width : 0ch;
+  animation:
+    /* 2) type 60ch in 4s after a 2.1s delay, then hold the final state */  
+    typing-desc 4s steps(160,end) 2.1s forwards,
+    /* 3) blink the caret every .5s, but only after the same 2.1s delay */
+    blink-caret  .5s step-end      2.1s infinite;
+}
+
+@keyframes typing-desc {
+  0%      { width:  0ch;                      }
+  99.9%   { width: 160ch; /* almost done, caret still visible/blinking */ }
+  100%    { width: 160ch; border-right-color: transparent; }
+  /* at the very end we force the caret back to invisible */
+}
+
+@keyframes blink-caret {
+  /* when blink‑caret finally starts (at 2.1s), it will:
+     • show the border at 0% & 100%, hide at 50%,
+     • repeat until typing‑desc’s 100% kicks in and makes it transparent again */
+  0%, 100% { border-color: currentColor; }
+  0%      { border-color: transparent;     }
+}
+
+@keyframes shake {
+
+  0%, 100% { transform: translateX(0);}
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px);}
+  20%, 40%, 60%, 80% { transform: translateX(2px);}
+}
+
+.location-icon {
+
+  animation: shake 0.6s ease-in-out 1 1.6s;
+}
+
+
+.location-card {
+  width: 330px;          /* force the card itself to always be 300px wide */
+  justify-self: center;  /* center it in its grid cell */
+}
+
+
+
+
+/* 1) Wrap your text and gallery each in their own container */
+.new-card {
+  position: relative;
+  overflow: hidden;
+  height: 125px;
+}
+
+/* The gallery sits under the text, but is fully transparent at rest */
+.fun-fact-gallery {
+  position: absolute;
+  inset: 0;               /* top:0; right:0; bottom:0; left:0; */
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* Only show the gallery on hover */
+.new-card:hover .fun-fact-gallery {
+  opacity: 1;
+}
+
+/* Your cycling images (exactly as before) */
+.fun-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.fun-image.active {
+  opacity: 1;
+}
+
+/* 2) The text block */
+.fun-fact-content {
+  position: relative;   /* so it sits above the gallery */
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+/* Hide the text on hover */
+.new-card:hover .fun-fact-content {
+  opacity: 0.5;
+}
+
+
+
+.scroll-fade-in.stagger-1 { --delay: 0.2s; }
+.scroll-fade-in.stagger-2 { --delay: 0.4s; }
+.scroll-fade-in.stagger-3 { --delay: 0.6s; }
+.scroll-fade-in.animate {
+  animation: fadeInUp 0.8s var(--delay) ease forwards;
+}
+
+.new-card h3 {
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767px) {
+  .info-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "skills"
+      "location"
+      "new"
+      "workexp";
+    grid-gap: 1rem;
+  }
+
+  /* make sure each card still lands in its area */
+  .skills-card          { grid-area: skills; }
+  .location-card        { grid-area: location; }
+  .new-card             { grid-area: new; }
+  .work-experience-card { grid-area: workexp; }
+}

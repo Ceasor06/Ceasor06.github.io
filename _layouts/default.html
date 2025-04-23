@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ page.title }} | {{ site.title }}</title>
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <!-- Animated SVG Styles -->
+  <link rel="stylesheet" href="{{ '/assets/css/work-in-progress-styles.css' | relative_url }}">
+  
+</head>
+<body class="light-theme">
+  
+<!-- Top Header -->
+<header class="header fade-in" style="--delay: 0.5s">
+  <div class="header-left fade-in" style="--delay: 1s">
+    <strong>Atharv Arya</strong>
+  </div>
+  <div class="header-right">
+    <ul class="header-links">
+      <li><a href="https://github.com/Ceasor06" target="_blank" rel="noopener noreferrer">Github</a></li>
+      <li><a href="#footer-contact">Contact</a></li>
+      <li><a href="https://drive.google.com/file/d/13z8aJnD_RZw8bN9pto1MJ3pWs2Xf5tok/view?usp=sharing" target="_blank" rel="noopener noreferrer">Resume</a></li>
+    </ul>
+    <button class="theme-toggle" id="theme-toggle">☀︎</button>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main>
+  {{ content }}
+</main>
+<footer id="footer-contact">
+  <div class="footer-contact">
+    <div class="footer-contact__inner">
+      <h2>Let’s Connect!</h2>
+      <p class="footer-contact__message">
+        If you have any queries, please feel free to reach out via email and I’ll be delighted to connect with you.
+      </p>
+      <a href="mailto:rishu4321@gmail.com" class="reach-out-btn">Reach Out</a>
+
+      <!-- Divider with your name + right‑column links -->
+      <div class="footer-bar-wrapper">
+        <hr class="footer-bar">
+
+        <div class="footer-bar-content">
+          <!-- LEFT: your name & copyright -->
+          <div class="footer-bar-left">
+            <div class="footer-bar-label">Atharv Arya</div>
+            <div class="footer-bar-label">&copy; 2025 Atharv Arya. All rights reserved.</div>
+          </div>
+
+          <!-- RIGHT: GitHub & Resume -->
+          <div class="footer-bar-right">
+            <a href="https://github.com/Ceasor06"
+              target="_blank" rel="noopener noreferrer"
+              class="footer-bar-link">
+              GitHub
+            </a>
+            <a href="https://drive.google.com/file/d/13z8aJnD_RZw8bN9pto1MJ3pWs2Xf5tok/view?usp=sharing"
+              target="_blank" rel="noopener noreferrer"
+              class="footer-bar-link">
+              Resume
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+</footer>
+
+
+
+<script src="{{ '/assets/js/script.js' | relative_url }}"></script>
+
+  <!-- Floating Logo Link at Bottom-Right -->
+<a href="http://linkedin.com/in/atharv-arya-322663149" class="floating-logo-1" target="_blank" rel="noopener noreferrer">
+  <img src="{{ '/assets/logo/linkedin.svg' | relative_url }}" alt="Go to Desired Page">
+</a>
+<a href="https://github.com/Ceasor06" class="floating-logo-2" target="_blank" rel="noopener noreferrer">
+  <img src="{{ '/assets/logo/github.svg' | relative_url }}" alt="Go to Desired Page">
+</a>
+</body>
+</html>
