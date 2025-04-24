@@ -1236,21 +1236,311 @@ body::before {
   margin-bottom: 1.5rem;
 }
 
-@media (max-width: 767px) {
-  .info-cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "skills"
-      "location"
-      "new"
-      "workexp";
-    grid-gap: 1rem;
+
+/*---------------------------------
+  RESPONSIVE BREAKPOINTS
+----------------------------------*/
+
+/* MOBILE FIRST: screens up to 768px */
+@media (max-width: 768px) {
+
+  /* 1) Intro Section: full‐width, smaller padding/text */
+  .intro-section {
+    padding: 1rem;
+    margin-bottom: 0rem;
+  }
+  .intro-card {
+    width: 100%;
+    padding: 1.5rem;
+    min-height: 30rem; 
   }
 
-  /* make sure each card still lands in its area */
+  /* 1) Make room at the top of the card for the floating avatar */
+  .intro-card {
+    position: relative;
+    /* avatar is 220px tall; add a bit extra so text sits below it: */
+    padding-top: 310px;
+  }
+
+  /* 2) Center the header and remove the old left‐margin */
+  .intro-header {
+    margin: 0 auto;        /* reset any horizontal offset */
+    text-align: center;
+    display: block;
+  }
+  .intro-header p {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+  }
+  /* (Optional) add a little gap between your heading and paragraph */
+  .intro-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-avatar-floating {
+    position: absolute;
+    top: 3rem;
+    left: 50%;               /* move its 0-point to center of container */
+    transform: translateX(-50%); /* shift back by half its own width */
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .intro-avatar-floating img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .intro-header p {
+    font-size: 1rem;
+  }
+
+  /* 2) Header links: shrink text & stack if needed */
+  .header-left strong {
+    font-size: 1.25rem;
+  }
+  .header-links {
+    gap: 1rem;
+  }
+  .header-links li a {
+    font-size: 0.9rem;
+  }
+
+  .info-cards {
+    display: grid;
+    grid-gap: 1rem;
+  
+    /* two columns: one fixed for Skills, one flexible for Location */
+    grid-template-columns: 200px 150px ;
+  
+    /* three rows: the first holds Skills+Location, the other two hold New and WorkExp */
+    grid-template-rows: auto auto auto;
+  
+    /* assign each area by name */
+    grid-template-areas:
+      "skills location"
+      "workexp  workexp"
+      "new      new";
+  
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  /* map your card classes into those named areas */
   .skills-card          { grid-area: skills; }
   .location-card        { grid-area: location; }
   .new-card             { grid-area: new; }
   .work-experience-card { grid-area: workexp; }
+  
+  .location-card {
+    min-height: 300px;  /* or whatever you chose */
+  }
+
+  .work-experience-card {
+    min-height: 300px;  /* or whatever you chose */
+  }
+
+  /* 4) Skill grid: fewer columns so icons aren’t tiny */
+  .skills-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.1rem;
+    padding-left: 5rem;
+  }
+  .skill-item svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* 5) Projects: single-column, full-width images */
+  .project-card {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+  .project-image,
+  .project-description {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .project-description {
+    font-size: 0.9rem;
+  }
+
+  /* target the 2nd project-card in your projects list */
+  .projects-section .project-card:nth-of-type(3) .project-image svg {
+    /* lift it up by 10px (tweak as needed) */
+    transform: translateY(-64px);
+  }
+
+  .projects-section .project-card:nth-of-type(4) .project-image svg {
+    /* lift it up by 10px (tweak as needed) */
+    transform: translateY(-44px);
+  }
+
+  /* assuming these are the only .project-card’s inside .projects-section */
+  .projects-section .project-card:nth-of-type(2) .project-button {
+    bottom: 15rem;
+    transform: translateX(67px);
+  }
+
+  .projects-section .project-card:nth-of-type(3) .project-button {
+    bottom: 14rem;
+    transform: translateX(67px);
+  }
+
+  .projects-section .project-card:nth-of-type(4) .project-button {
+    bottom: 11rem;
+    transform: translateX(67px);
+  }
+
+  /* 6) Contact-footer: reduce padding, stack bar content */
+  .footer-contact {
+    padding: 2rem 1rem;
+  }
+  /* add some space before the “Let’s Connect!” */
+  .footer-contact__inner h2 {
+    margin-top: 2rem;  /* adjust value as needed */
+  }
+
+  .footer-bar-wrapper {
+    max-width: 90%;
+  }
+  .footer-bar-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;  /* spread left and right columns */
+  }
+  
+  .footer-bar-right {
+    /* this is optional if you already have space-between,
+       but if you switch to justify-content: flex-start, then: */
+    margin-left: auto;               /* push this column to the right */
+    text-align: right;               /* right-align its contents */
+  }
+
+  .footer-contact__message {
+    font-size: 0.875rem;   /* or whatever size feels right */
+    margin-top: 2rem;
+    line-height: 1.4;      /* optional: tighten up the leading */
+  }
+  /* 7) Floating logos: hide or shrink */
+  .floating-logo-1,
+  .floating-logo-2 {
+    display: none;
+  }
 }
+
+
+
+/* 1) hide mobile bits by default */
+.mobile-menu-btn,
+.mobile-nav {
+  display: none;
+}
+
+/* 2) desktop ≥768px: show desktop-nav; hide mobile */
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .mobile-menu-btn,
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* 3) mobile <768px: hide desktop, show hamburger + slide-in nav */
+@media (max-width: 767px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: inline-block;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+  }
+
+  .mobile-nav {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    /* make it lightly opaque white: */
+    background: rgba(255,255,255,0.95);
+    /* OR fully opaque: background: #fff; */
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 200;
+    border-radius: 0.5rem;       /* ← smooth rounded corners */
+    overflow: hidden;  
+  }
+
+  /* dark-mode variant: */
+  body.dark-theme .mobile-nav {
+    background: rgba(19,19,32,0.95);
+    border-radius: 0.5rem;
+    /* OR fully opaque: background: #131320; */
+  }
+  .mobile-nav.open {
+    transform: translateX(0);
+  }
+  .mobile-nav .header-links {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+  .mobile-nav .header-links li + li {
+    margin-top: 0.5rem;
+  }
+  .mobile-nav .header-links a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+
+
+
+
+
+.mobile-nav {
+  position: absolute;
+  top: 100%;           /* sits directly below the header */
+  right: 0.5rem;       /* align with the ☰ button */
+  width: 200px;        /* adjust as needed */
+  background: inherit; /* will inherit your theme’s .mobile-nav background */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: none;       /* hide by default */
+  flex-direction: column;
+  padding: 0.5rem 0;
+  z-index: 150;
+}
+
+.mobile-nav.open {
+  display: flex;       /* flip to show */
+}
+.mobile-nav .header-links {
+  flex-direction: column;
+}
+.mobile-nav .header-links li {
+  margin: 0.25rem 0;
+}
+.mobile-nav .header-links a {
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+
+body.light-theme .mobile-nav { background: rgba(255,255,255,0.95); }
+body.dark-theme  .mobile-nav { background: rgba(19,19,32,0.9); }
+

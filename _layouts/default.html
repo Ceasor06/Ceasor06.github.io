@@ -17,15 +17,33 @@
   <div class="header-left fade-in" style="--delay: 1s">
     <strong>Atharv Arya</strong>
   </div>
+
   <div class="header-right">
-    <ul class="header-links">
-      <li><a href="https://github.com/Ceasor06" target="_blank" rel="noopener noreferrer">Github</a></li>
+    <!-- desktop nav (always visible ≥768px) -->
+    <ul class="header-links desktop-nav">
+      <li><a href="https://github.com/Ceasor06" target="_blank">Github</a></li>
       <li><a href="#footer-contact">Contact</a></li>
-      <li><a href="https://drive.google.com/file/d/13z8aJnD_RZw8bN9pto1MJ3pWs2Xf5tok/view?usp=sharing" target="_blank" rel="noopener noreferrer">Resume</a></li>
+      <li><a href="https://drive.google.com/file/d/13z8aJnD_RZw8bN9pto1MJ3pWs2Xf5tok/view?usp=sharing">Resume</a></li>
     </ul>
+  
+    <!-- theme toggle is always visible -->
     <button class="theme-toggle" id="theme-toggle">☀︎</button>
+  
+    <!-- mobile menu toggle (only <768px) -->
+    <button id="mobile-menu-btn" class="mobile-menu-btn">☰</button>
+  
+    <!-- slide-in mobile nav -->
+    <nav id="mobile-nav" class="mobile-nav">
+      <ul class="header-links">
+        <li><a href="https://github.com/Ceasor06" target="_blank">Github</a></li>
+        <li><a href="#footer-contact">Contact</a></li>
+        <li><a href="https://drive.google.com/file/d/13z8aJnD_RZw8bN9pto1MJ3pWs2Xf5tok/view?usp=sharing">Resume</a></li>
+      </ul>
+    </nav>
   </div>
+  
 </header>
+
 
 <!-- Main Content -->
 <main>

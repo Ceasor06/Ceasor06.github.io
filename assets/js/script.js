@@ -1,3 +1,13 @@
+// if someone lands on your page with #footer-contact in the URL, remove it immediately
+if (window.location.hash === "#footer-contact") {
+  // scroll back to top instantly
+  window.scrollTo(0, 0);
+  // remove the hash without reloading
+  history.replaceState(null, "", window.location.pathname + window.location.search);
+}
+
+
+
 // Check for a saved theme in localStorage
 const savedTheme = localStorage.getItem('theme');
 
@@ -181,3 +191,12 @@ function typeNext() {
 
 // kick it off after a small pause
 setTimeout(typeNext, 300);
+
+
+const menuBtn = document.getElementById('mobile-menu-btn');
+const mobileNav = document.getElementById('mobile-nav');
+
+menuBtn.addEventListener('click', () => {
+  mobileNav.classList.toggle('open');
+});
+
